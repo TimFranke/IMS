@@ -1,23 +1,15 @@
 ﻿@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 <table class="table">
     <thead>
-    <tr>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var inv in listInventories)
-    {
-        <tr>
-            <td>@inv.InventoryName</td>
-            <td>@inv.Quantity</td>
-            <td>@inv.Price.ToString("c")</td>
-            <td><button type="button" class="btn btn-light">Edit</button></td>
-        </tr>
-    }
+        <InventoryListItemComponent Inventories="listInventories"></InventoryListItemComponent>
     </tbody>
 </table>
 
