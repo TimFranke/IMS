@@ -10,7 +10,7 @@ namespace IMS.Plugins.InMemory
         private readonly IInventoryTransactionRepository inventoryTransactionRepository;
         private readonly IInventoryRepository inventoryRepository;
 
-        public ProductTransactionRepository(IProductRepository productRepository, 
+        public ProductTransactionRepository(IProductRepository productRepository,
             IInventoryTransactionRepository inventoryTransactionRepository,
             IInventoryRepository inventoryRepository)
         {
@@ -28,7 +28,7 @@ namespace IMS.Plugins.InMemory
                     if (pi.Inventory != null)
                     {
                         //add inventory transaction
-                        this.inventoryTransactionRepository.ProduceAsync(productionNumber, 
+                        this.inventoryTransactionRepository.ProduceAsync(productionNumber,
                             pi.Inventory, pi.InventoryQuantity * quantity, doneBy, -1);
 
                         //decrease the inventory
@@ -51,6 +51,23 @@ namespace IMS.Plugins.InMemory
                 TransactionDate = DateTime.Now,
                 DoneBy = doneBy
             });
+
+        }
+
+        public Task SellProductAsync(string salesOrderNumber, Product product, int quantity, double unitPrice, string doneBy)
+        {
+            this._productTransactions.Add(new ProductTransaction
+            {
+                ActivityType = ProductTransactionType.SellProduct,
+                SONumber = salesOrderNumber,
+                ProductId = product.ProductId,
+                QuantityBefore = product.Quantity,
+                QuantityAfter = product.Quantity - quantity,
+                TransactionDate = DateTime.Now,
+                DoneBy = doneBy,
+                UnitPrice = unitPrice
+            });
+            return Task.CompletedTask;
 
         }
     }

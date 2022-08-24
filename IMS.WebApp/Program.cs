@@ -36,6 +36,7 @@ builder.Services.AddTransient<IUpdateProductUseCase, UpdateProductUseCase>();
 
 builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
 builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
+builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
 //Scoped give each user it's own copy, but lifetime is for object's instance's lifetime.
 //i.e. for SignalR, when you refresh the browser and disconnect and then get a new SignalR connection,
