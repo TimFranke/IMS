@@ -21,6 +21,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
+builder.Services.AddSingleton<IProductTransactionRepository, ProductTransactionRepository>();
 
 //Transient give each user it's own copy. 1 instance per user.
 builder.Services.AddTransient<IViewInventoriesByNameUseCase, ViewInventoriesByNameUseCase>();
@@ -34,6 +35,8 @@ builder.Services.AddTransient<IViewProductByIdUseCase, ViewProductByIdUseCase>()
 builder.Services.AddTransient<IUpdateProductUseCase, UpdateProductUseCase>();
 
 builder.Services.AddTransient<IPurchaseInventoryUseCase, PurchaseInventoryUseCase>();
+builder.Services.AddTransient<IProduceProductUseCase, ProduceProductUseCase>();
+
 //Scoped give each user it's own copy, but lifetime is for object's instance's lifetime.
 //i.e. for SignalR, when you refresh the browser and disconnect and then get a new SignalR connection,
 //you get a new copy of this instanced object.
