@@ -1,7 +1,7 @@
 ﻿using IMS.CoreBusiness;
 using IMS.UseCases.PluginInterfaces;
 
-namespace IMS.UseCases.Products
+namespace IMS.Plugins.InMemory
 {
     public class ProductRepository : IProductRepository
     {
