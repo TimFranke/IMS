@@ -1,7 +1,7 @@
 ﻿@page "/addproduct"
 @inject IAddProductUseCase AddProductUseCase
 @inject NavigationManager NavigationManager
-
+@attribute [Authorize(Policy = "Inventory")]
 <h3>Add Product</h3>
 <br />
 <EditForm Model="product" OnValidSubmit="SaveProduct">
