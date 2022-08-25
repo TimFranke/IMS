@@ -14,13 +14,38 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Web;
 using IMS.Plugins.EFCoreSqlServer;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var conn = builder.Configuration.GetConnectionString("InventoryManagement");
+
+//configure authorizations
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim("Department", "Administration"));
+    options.AddPolicy("Inventory", policy => policy.RequireClaim("Department", "InventoryManagement"));
+    options.AddPolicy("Sales", policy => policy.RequireClaim("Department", "Sales"));
+    options.AddPolicy("Purchasers", policy => policy.RequireClaim("Department", "Purchasing"));
+    options.AddPolicy("Productions", policy => policy.RequireClaim("Department", "ProductionManagement"));
+});
+
+//Configure EF Core for Identity
+builder.Services.AddDbContext<AccountDbContext>(options =>
+{
+    options.UseSqlServer(conn);
+});
+
+//Configure Identity
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false; //changed to false so we don't need to implement. Just an example.
+}).AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddDbContextFactory<IMSContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("InventoryManagement"));
+    options.UseSqlServer(conn);
 });
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -79,6 +104,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
